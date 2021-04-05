@@ -23,6 +23,13 @@ namespace ConsoleGpsConv {
             y = (h + N) * cos_lambda * sin_phi;
             z = (h + (1 - e_sq) * N) * sin_lambda;
         }
-  }
+        
+        
+        private static double DegreesToRadians(double degrees) {
+            return PI / 180.0 * degrees;
+        }
+        
+        
+    }
   
 }
