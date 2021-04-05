@@ -12,8 +12,8 @@ float[,] local_ctrl_p = new float[,] {
 };
 
 GeodeticToEcef(43.88072176381581f, 11.072238294111774f, 53, out double x1, out double y1, out double z1);
-GeodeticToEcef(43.88072176381581f, 11.072238294111774f, 53, out double x2, out double y2, out double z2);
-GeodeticToEcef(43.88072176381581f, 11.072238294111774f, 53, out double x3, out double y3, out double z3);
+GeodeticToEcef(43.88099406334439, 11.072485923398222, 53, out double x2, out double y2, out double z2);
+GeodeticToEcef(43.88080644977896, 11.072808964924704, 53, out double x3, out double y3, out double z3);
 
 float[,] geocent_ctrl_p = new float[,] {
     {float.Parse(x1.ToString()), float.Parse(y1.ToString()), float.Parse(z1.ToString())},
