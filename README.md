@@ -2,26 +2,115 @@
 
 .NET porting of https://github.com/gabriel-de-luca/simil
 
-## Usage
+
+## Test() function Results
 
 ```
-float[,] local_ctrl_p = new float[,] {
-    {0, 0, 0},
-    {0, 12.24f, 0},
-    {32.42f, 6.79f, 0}
-};
+source_q_coords :
+[[0. 0. 2.]
+ [0. 2. 3.]
+ [0. 2. 1.]
+ [0. 0. 0.]]
 
-GeodeticToEcef(43.88072176381581f, 11.072238294111774f, 53, out double x1, out double y1, out double z1);
-GeodeticToEcef(43.88099406334439, 11.072485923398222, 53, out double x2, out double y2, out double z2);
-GeodeticToEcef(43.88080644977896, 11.072808964924704, 53, out double x3, out double y3, out double z3);
+target_q_coords :
+[[3.  6.  4.5]
+ [7.  7.  4. ]
+ [5.  2.  0.5]
+ [0.  0.  0. ]]
 
-float[,] geocent_ctrl_p = new float[,] {
-    {float.Parse(x1.ToString()), float.Parse(y1.ToString()), float.Parse(z1.ToString())},
-    {float.Parse(x2.ToString()), float.Parse(y2.ToString()), float.Parse(z2.ToString())},
-    {float.Parse(x3.ToString()), float.Parse(y3.ToString()), float.Parse(z3.ToString())},
-};
+b_scalar :
+22.0
 
-float m;
-NDarray r, t;
-(m, r, t) = Simil.process(local_ctrl_p, geocent_ctrl_p);
+c_scalar :
+3.0
+
+q0_w_matrix :
+[[[ 0.  0. -0.  0.]
+  [-0.  0.  0.  0.]
+  [ 0. -0.  0.  0.]
+  [-0. -0. -0.  0.]]
+
+ [[ 0.  2. -2.  0.]
+  [-2.  0.  0.  2.]
+  [ 2. -0.  0.  2.]
+  [-0. -2. -2.  0.]]
+
+ [[ 0.  1. -3.  2.]
+  [-1.  0.  2.  3.]
+  [ 3. -2.  0.  1.]
+  [-2. -3. -1.  0.]]]
+
+qt_q_matrix :
+[[[ 0.  -5.   7.   3. ]
+  [ 5.   0.  -3.   7. ]
+  [-7.   3.   0.   5. ]
+  [-3.  -7.  -5.   0. ]]
+
+ [[ 0.  -2.   7.   6. ]
+  [ 2.   0.  -6.   7. ]
+  [-7.   6.   0.   2. ]
+  [-6.  -7.  -2.   0. ]]
+
+ [[ 0.  -0.5  4.   4.5]
+  [ 0.5  0.  -4.5  4. ]
+  [-4.   4.5  0.   0.5]
+  [-4.5 -4.  -0.5  0. ]]]
+
+a_matrix :
+[[-21.5  33.5  17.5 -12.5]
+ [ 33.5  12.5  23.5  15.5]
+ [ 17.5  23.5 -30.5 -17.5]
+ [-12.5  15.5 -17.5  39.5]]
+
+b_matrix :
+[[  0.   -7.5  18.   13.5]
+ [  7.5   0.  -13.5  18. ]
+ [-18.   13.5   0.    7.5]
+ [-13.5 -18.   -7.5   0. ]]
+
+c_matrix :
+[[ 0.  3. -5.  2.]
+ [-3.  0.  2.  5.]
+ [ 5. -2.  0.  3.]
+ [-2. -5. -3.  0.]]
+
+blc_matrix :
+[[  0.  -12.   25.5  10.5]
+ [ 12.    0.  -16.5  10.5]
+ [-25.5  16.5   0.    3. ]
+ [-10.5 -10.5  -3.    0. ]]
+
+d_matrix :
+[[237.  -3.  -3. -21.]
+ [ -3. 213. -21.  21.]
+ [ -3. -21. 219. -21.]
+ [-21.  21. -21. 195.]]
+
+beta_1 : 0
+
+r_quat :
+[ 0.5 -0.5  0.5 -0.5]
+
+lambda_i : 1.5
+
+i : 2
+
+r_matrix :
+[[ 0.  0.  1.]
+ [-1.  0.  0.]
+ [ 0. -1.  0.]]
+
+s_quat :
+[ 2.25 -1.25 -3.75 -0.25]
+
+t_vector :
+[[3.]
+ [7.]
+ [5.]]
+
+target_computed_points :
+[[3.  7.  5. ]
+ [6.  7.  2. ]
+ [4.5 4.  0.5]]
 ```
+
