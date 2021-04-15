@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Numpy;
 using System.Linq;
@@ -21,110 +21,172 @@ namespace ConsoleGpsConv {
         }
 
         public static NDarray _get_q_matrix(NDarray quaternions) {
-            var list = new List<float[]>();
-            if (quaternions.ndim == 1)
-            {
-                var floats = new List<float>();
-                for (int i = 0; i < quaternions.len; i++)
-                {
-                    floats.Add(getFloatValue(quaternions[i]));
+
+
+            if (quaternions.ndim == 1) {
+
+                var temp2 = new List<List<float>>();
+                temp2.Add(new List<float> {
+                        (float)quaternions[3],
+                        (float)-quaternions[2],
+                        (float)quaternions[1],
+                        (float)quaternions[0]
+                    });
+                temp2.Add(new List<float> {
+                        (float)quaternions[2],
+                        (float)quaternions[3],
+                        (float)-quaternions[0],
+                        (float)quaternions[1]
+                    });
+                temp2.Add(new List<float> {
+                        (float)-quaternions[1],
+                        (float)quaternions[0],
+                        (float)quaternions[3],
+                        (float)quaternions[2]
+                    });
+                temp2.Add(new List<float> {
+                         (float)-quaternions[0],
+                        (float)-quaternions[1],
+                        (float)-quaternions[2],
+                        (float)quaternions[3]
+                    });
+
+
+                float[][] arrays = temp2.Select(a => a.ToArray()).ToArray();
+
+                var matrix = getMatrix2D(arrays);
+
+                return np.array(matrix);
+
+
+            } else {
+
+                List<List<List<float>>> result = new List<List<List<float>>>();
+                for (int i = 0; i < quaternions.len; i++) {
+                    var q = quaternions[i];
+
+                    var temp2 = new List<List<float>>();
+                    temp2.Add(new List<float> {
+                            (float)q[3],
+                            (float)-q[2],
+                            (float)q[1],
+                            (float)q[0]
+                        });
+                    temp2.Add(new List<float> {
+                            (float)q[2],
+                            (float)q[3],
+                            (float)-q[0],
+                            (float)q[1]
+                        });
+                    temp2.Add(new List<float> {
+                            (float)-q[1],
+                            (float)q[0],
+                            (float)q[3],
+                            (float)q[2]
+                        });
+                    temp2.Add(new List<float> {
+                            (float)-q[0],
+                            (float)-q[1],
+                            (float)-q[2],
+                            (float)q[3]
+                        });
+
+                    result.Add(temp2);
+
                 }
-                list.Add(floats.ToArray());
+
+                float[][][] arrays = result.Select(a => a.Select(b => b.ToArray()).ToArray()).ToArray();
+
+                var matrix = getMatrix(arrays);
+
+                return np.array(matrix);
             }
-            else
-            {
-
-                for (int i = 0; i < quaternions.len; i++)
-                {
-                    list.Add((quaternions[i]).GetData<float>());
-                }
-
-            }
-            var q_matrix = (from q in list
-                            select new float[][] {
-                    new float[] {
-                        q[3],
-                        -q[2],
-                        q[1],
-                        q[0]
-                    },
-                    new float[] {
-                        q[2],
-                        q[3],
-                        -q[0],
-                        q[1]
-                    },
-                    new float[] {
-                        -q[1],
-                        q[0],
-                        q[3],
-                        q[2]
-                    },
-                    new float[] {
-                        -q[0],
-                        -q[1],
-                        -q[2],
-                        q[3]
-                    }
-                }).ToArray();
-
-            var matrix = getMatrix(q_matrix);
-
-            return np.array(matrix);
         }
 
         public static NDarray _get_w_matrix(NDarray quaternions) {
-            var list = new List<float[]>();
-            if(quaternions.ndim == 1)
-            {
-                var floats = new List<float>();
-                for (int i = 0; i < quaternions.len; i++)
-                {
-                    floats.Add(getFloatValue(quaternions[i]));
+
+
+            if (quaternions.ndim == 1) {
+
+                var temp2 = new List<List<float>>();
+                temp2.Add(new List<float> {
+                        (float)quaternions[3],
+                        (float)quaternions[2],
+                        (float)-quaternions[1],
+                        (float)quaternions[0]
+                    });
+                temp2.Add(new List<float> {
+                        (float)-quaternions[2],
+                        (float)quaternions[3],
+                        (float)quaternions[0],
+                        (float)quaternions[1]
+                    });
+                temp2.Add(new List<float> {
+                        (float)quaternions[1],
+                        (float)-quaternions[0],
+                        (float)quaternions[3],
+                        (float)quaternions[2]
+                    });
+                temp2.Add(new List<float> {
+                         (float)-quaternions[0],
+                        (float)-quaternions[1],
+                        (float)-quaternions[2],
+                        (float)quaternions[3]
+                    });
+
+
+                float[][] arrays = temp2.Select(a => a.ToArray()).ToArray();
+
+                var matrix = getMatrix2D(arrays);
+
+                return np.array(matrix);
+
+
+            } else {
+
+
+                List<List<List<float>>> result = new List<List<List<float>>>();
+                for (int i = 0; i < quaternions.len; i++) {
+                    var q = quaternions[i];
+
+                    var temp2 = new List<List<float>>();
+                    temp2.Add(new List<float> {
+                        (float)q[3],
+                        (float)q[2],
+                        (float)-q[1],
+                        (float)q[0]
+                    });
+                    temp2.Add(new List<float> {
+                        (float)-q[2],
+                        (float)q[3],
+                        (float)q[0],
+                        (float)q[1]
+                    });
+                    temp2.Add(new List<float> {
+                        (float)q[1],
+                        (float)-q[0],
+                        (float)q[3],
+                        (float)q[2]
+                    });
+                    temp2.Add(new List<float> {
+                         (float)-q[0],
+                        (float)-q[1],
+                        (float)-q[2],
+                        (float)q[3]
+                    });
+
+                    result.Add(temp2);
+
                 }
-                list.Add(floats.ToArray());
+
+                float[][][] arrays = result.Select(a => a.Select(b => b.ToArray()).ToArray()).ToArray();
+
+                var matrix = getMatrix(arrays);
+
+                return np.array(matrix);
             }
-            else
-            {
-
-                for (int i = 0; i < quaternions.len; i++)
-                {
-                    list.Add((quaternions[i]).GetData<float>());
-                }
-
-            }
-            var w_matrix = (from q in list
-                            select new float[][] {
-                    new float[] {
-                        q[3],
-                        q[2],
-                        -q[1],
-                        q[0]
-                    },
-                    new float[] {
-                        -q[2],
-                        q[3],
-                        q[0],
-                        q[1]
-                    },
-                    new float[] {
-                        q[1],
-                        -q[0],
-                        q[3],
-                        q[2]
-                    },
-                    new float[] {
-                        -q[0],
-                        -q[1],
-                        -q[2],
-                        q[3]
-                    }
-                }).ToArray();
 
 
-            var matrix = getMatrix(w_matrix);
-
-            return np.array(matrix);
         }
 
         public static float[,,] getMatrix(float[][][] matrix) {
@@ -139,19 +201,31 @@ namespace ConsoleGpsConv {
             return test;
         }
 
+        public static float[,] getMatrix2D(float[][] matrix) {
+            float[,] test = new float[matrix.Count(), matrix.First().Length];
+            for (int i = 0; i < matrix.Count(); i++) {
+                for (int j = 0; j < matrix[i].Length; j++) {
+                    test[i, j] = matrix[i][j];
+                }
+            }
+            return test;
+        }
+
+
         public static NDarray _get_abc_matrices(NDarray alpha_0, NDarray m1, NDarray m2 = null) {
             NDarray matrix;
             if (m2 == null) {
-                var temp = new NDarray[] { alpha_0, m1 };
                 //matrix = np.einsum("i,ijk->jk", temp);
                 matrix = np.tensordot(alpha_0, m1, new[] { 0, 0 });
             }
             else {
-                var temp = new NDarray[] { alpha_0, np.matmul(np.transpose(m1, new[] { 0, 2, 1 }), m2) };
                 //matrix = np.einsum("i,ijk->jk", temp);
-                matrix = np.tensordot(alpha_0, np.matmul(np.transpose(m1, new[] { 0, 2, 1 }), m2), new[] { 0, 0 });
-                    //np.tensordot(t,I, axes=([0],[0]))
+                var trans = np.transpose(m1, new[] { 0, 2, 1 });
+                var temp = np.matmul(trans, m2);
 
+                matrix = np.tensordot(alpha_0, temp, new[] { 0, 0 });
+
+                //matrix = np.tensordot(alpha_0, np.matmul(np.transpose(m1, new[] { 0, 2, 1 }), m2), new[] { 0, 0 });
             }
             return matrix;
         }
@@ -171,7 +245,6 @@ namespace ConsoleGpsConv {
             NDarray eigvals, eigvects;
             (eigvals, eigvects) = np.linalg.eig(d_matrix);
             NDarray beta_1 = np.argmax(eigvals);
-            //NDarray r_quat = eigvects[":, beta_1"];
             var r_quat = eigvects[":", beta_1];
             return (beta_1, r_quat);
         }
@@ -183,9 +256,6 @@ namespace ConsoleGpsConv {
             var expr_3 = (1 / cs) * np.matmul(np.matmul(np.matmul(rq.T, cm.T), cm), rq);
             var lambda_next = (expr_1 - expr_2) / (bs - expr_3);
             return getFloatValue(lambda_next);
-            //return lambda_next.astype(np.float64).GetData<float>()[0];
-            //return float.Parse(lambda_next.astype(np.float64));
-
         }
 
         private static float getFloatValue(NDarray array)
@@ -197,13 +267,6 @@ namespace ConsoleGpsConv {
             }
             return res;
         }
-
-        //def _get_lambda_next(am, bs, bm, cs, cm, rq):
-        //expr_1 = rq.T @ am @ rq
-        //expr_2 = (1 / cs) * (rq.T @ bm.T @ cm @ rq)
-        //expr_3 = (1/cs) * (rq.T @ cm.T @ cm @ rq)
-        //lambda_next = (expr_1-expr_2) / (bs-expr_3)
-        //return lambda_next
 
 
         public static (NDarray, NDarray, NDarray, NDarray, float, float) _get_solution(NDarray am, NDarray bs, NDarray bm, NDarray cs, NDarray cm, bool scale, float li, float i) {
@@ -223,25 +286,15 @@ namespace ConsoleGpsConv {
                 {
                     li = lambda_next;
                     i = i + 1;
-                    //li, i = lambda_next, i + 1;
                     return _get_solution(am, bs, bm, cs, cm, scale, li, i);
                 }
-
-                //lambda_next = _get_lambda_next(am, bs, bm, cs, cm, r_quat)
-                //if abs(li - lambda_next) < 0.000001:
-                //    return blc_matrix, d_matrix, beta_1, r_quat, li, i
-                //else:
-                //    li, i = lambda_next, i + 1
-                //    return _get_solution(am, bs, bm, cs, cm, scale, li, i)
-                //throw new Exception("not implemeted!");
             }
         }
 
         public static NDarray _get_r_matrix(NDarray r_quat) {
-            //var temp = new NDarray[] { r_quat };
-            var r_w_matrix = _get_w_matrix(r_quat)[0];
-            var r_q_matrix = _get_q_matrix(r_quat)[0];
-            var r_matrix = np.matmul(r_w_matrix.T, r_q_matrix)[":3,:3"];
+            var r_w_matrix = _get_w_matrix(r_quat);
+            var r_q_matrix = _get_q_matrix(r_quat);
+            var r_matrix = np.matmul(r_w_matrix.T, r_q_matrix)[":3",":3"];
             return r_matrix;
         }
 
@@ -251,8 +304,7 @@ namespace ConsoleGpsConv {
         }
 
         public static NDarray _get_t_vector(NDarray r_quat, NDarray s_quat) {
-            //var temp = new NDarray[] { r_quat };
-            var r_w_matrix = _get_w_matrix(r_quat)[0];
+            var r_w_matrix = _get_w_matrix(r_quat);
             var t_vector = 2 * np.matmul(r_w_matrix.T, s_quat)[":3"];
             return t_vector;
         }
@@ -411,6 +463,117 @@ namespace ConsoleGpsConv {
             return (lambda_i, r_matrix, t_vector);
 
         }
+
+
+
+
+
+
+
+        public static void test() {
+
+            float[,] source_points = new float[,] {
+                {0, 0, 0},
+                {0, 2, 2},
+                {2, 3, 1}
+            };
+
+            float[,] target_points = new float[,] {
+                {3, 7, 5},
+                {6, 7, 2},
+                {4.5f, 4, 0.5f}
+            };
+
+
+            var source_coords = np.array(source_points, dtype: np.float64).T;
+            var target_coords = np.array(target_points, dtype: np.float64).T;
+            var n = source_coords.shape[1];
+            var alpha_0 = np.ones(n);
+            float lambda_0 = 1.0f;
+            bool scale = true;
+
+
+            //eq 29
+            var source_q_coords = np.concatenate((source_coords, np.zeros((1, n))));
+            Console.WriteLine($"\nsource_q_coords :\n{source_q_coords}");
+            var target_q_coords = np.concatenate((target_coords, np.zeros((1, n))));
+            Console.WriteLine($"\ntarget_q_coords :\n{target_q_coords}");
+
+            //eq 40
+            var b_scalar = _get_scalar(alpha_0, source_q_coords);
+            Console.WriteLine($"\nb_scalar :\n{b_scalar}");
+
+            //eq 41
+            //var c_scalar = np.einsum("i->", temp);
+            var c_scalar = np.sum(alpha_0, axis: -1);
+            Console.WriteLine($"\nc_scalar :\n{c_scalar}");
+
+            //eq 17
+            var q0_w_matrix = _get_w_matrix(source_q_coords.T);
+            Console.WriteLine($"\nq0_w_matrix :\n{q0_w_matrix}");
+
+            //eq 16
+            var qt_q_matrix = _get_q_matrix(target_q_coords.T);
+            Console.WriteLine($"\nqt_q_matrix :\n{qt_q_matrix}");
+
+            //eq 42
+            var a_matrix = _get_abc_matrices(alpha_0, q0_w_matrix, qt_q_matrix);
+            Console.WriteLine($"\na_matrix :\n{a_matrix}");
+
+            //eq 43
+            var b_matrix = _get_abc_matrices(alpha_0, qt_q_matrix);
+            Console.WriteLine($"\nb_matrix :\n{b_matrix}");
+
+            //eq 44
+            var c_matrix = _get_abc_matrices(alpha_0, q0_w_matrix);
+            Console.WriteLine($"\nc_matrix :\n{c_matrix}");
+
+
+            float lambda_i = lambda_0;
+            float i = 1;
+
+            NDarray blc_matrix, d_matrix, beta_1, r_quat;
+            (blc_matrix, d_matrix, beta_1, r_quat, lambda_i, i) = _get_solution(a_matrix,
+                                                                              b_scalar,
+                                                                              b_matrix,
+                                                                              c_scalar,
+                                                                              c_matrix,
+                                                                              scale,
+                                                                              lambda_i,
+                                                                              i);
+
+            Console.WriteLine($"\nblc_matrix :\n{blc_matrix}");
+            Console.WriteLine($"\nd_matrix :\n{d_matrix}");
+            Console.WriteLine($"\nbeta_1 : {beta_1}");
+            Console.WriteLine($"\nr_quat :\n{r_quat}");
+            Console.WriteLine($"\nlambda_i : {lambda_i}");
+            Console.WriteLine($"\ni : {i}");
+
+            //eq 25
+            var r_matrix = _get_r_matrix(r_quat);
+            Console.WriteLine($"\nr_matrix :\n{r_matrix}");
+
+            //eq 58
+            var s_quat = _get_s_quat(c_scalar, blc_matrix, r_quat);
+            Console.WriteLine($"\ns_quat :\n{s_quat}");
+
+            //eq 28, 26
+            var t_vector = np.array(_get_t_vector(r_quat, s_quat)).reshape(3, 1);
+            Console.WriteLine($"\nt_vector :\n{t_vector}");
+
+            //Outputs
+            var m = lambda_i;
+            var r = r_matrix;
+            var t = t_vector;
+
+            //Verification
+            var target_computed_points = (m * np.matmul(r, source_coords) + t).T;
+            Console.WriteLine($"\ntarget_computed_points :\n{target_computed_points}");
+
+        }
+
+
+
 
     }
 }
